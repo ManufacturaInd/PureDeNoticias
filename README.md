@@ -2,10 +2,19 @@
 
 ## Notas de instalação:
 
-O bot do Puré de notícias aproveita-se da framework tweepy
+As várias dependências podem ser instaladas num só comando:
 
-> pip install tweepy
+    pip install -r requirements.txt
 
-A framework tweepy por sua vez necessita de accesso ssl pelo que é recomendando instalar as seguintes bibliotecas:
+No Debian, surge um erro relacionado com a package `cffi`; precisamos de instalar a development package da `libffi`:
 
-> pip install pyopenssl ndg-httpsclient pyasn1
+    sudo aptitude install libffi-dev
+
+## Chaves de autorização do Twitter
+
+Não está incluído no repo o ficheiro com as chaves de autorização do Twitter (naturalmente). Para isto funcionar, é preciso ter um ficheiro de texto `keys.txt` na raiz do projeto, estruturado da seguinte forma:
+
+    <consumer key>
+    <consumer secret>
+    <access key>
+    <access secret>
