@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import tweepy
-import time,sys
+import time
 from random import choice, shuffle
+
 
 def get_word_matches(word, lines):
     matches = []
@@ -18,6 +19,7 @@ def test_common_word(word, lines):
     if not len(matches) > 1:
         return False
     return True
+
 
 def get_dada_headline(lines, wordlist):
     # escolher uma palavra para dividir e ver se podemos usar
@@ -44,7 +46,7 @@ def get_dada_headline(lines, wordlist):
 
 # --- programa comeca aqui ---
 
-keys = open("keys.txt",'r')
+keys = open("keys.txt", 'r')
 CONSUMER_KEY = keys.readline().rstrip("\n")
 CONSUMER_SECRET = keys.readline().rstrip("\n")
 ACCESS_KEY = keys.readline().rstrip("\n")
@@ -60,10 +62,9 @@ while not success:
     HEADLINES_FILE = open("headlines.txt", "r").readlines()
 
     stringParaEnviar = get_dada_headline(HEADLINES_FILE, WORDLIST_PT)
-    print "post:",stringParaEnviar
+    print "post:", stringParaEnviar
     if api.update_status(status=bytes(stringParaEnviar)):
         success = True
     else:
         print "vou esperar 5 segundos e tentar de novo"
-        time.sleep( 5 )
-
+        time.sleep(5)
