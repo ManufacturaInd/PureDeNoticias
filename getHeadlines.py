@@ -17,7 +17,7 @@ while(response.status_code == 200 and page < maxPages):
     page += 1
     print "estou no pedido nº",page
     url = "http://api.destakes.com/search/?format=json" + "&page=" + str(page)
-    response = requests.get(url, timeout=10)
+    response = requests.get(url, timeout=30)
 file = open("headlines.txt",'w')
 file.write("\n".join(noticias).encode("utf-8"))
 file.close()
