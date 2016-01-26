@@ -6,7 +6,7 @@ page = 0
 maxPages = 20
 url = "http://api.destakes.com/search/?format=json" + "&page=" + str(page)
 response = requests.get(url, timeout=10)
-print response.status_code
+# print response.status_code
 noticias = []
 while(response.status_code == 200 and page < maxPages):
     data = json.loads(response.content)
@@ -15,7 +15,7 @@ while(response.status_code == 200 and page < maxPages):
         if title not in noticias:
                noticias.append(title)
     page += 1
-    print "estou no pedido nº",page
+    # print "estou no pedido nº",page
     url = "http://api.destakes.com/search/?format=json" + "&page=" + str(page)
     response = requests.get(url, timeout=30)
 file = open("headlines.txt",'w')

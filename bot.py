@@ -62,9 +62,9 @@ while not success:
     HEADLINES_FILE = open("headlines.txt", "r").readlines()
 
     stringParaEnviar = get_dada_headline(HEADLINES_FILE, WORDLIST_PT)
-    print "post:", stringParaEnviar
+    # print "post:", stringParaEnviar
     if api.update_status(status=bytes(stringParaEnviar)):
         success = True
     else:
-        print "vou esperar 5 segundos e tentar de novo"
+        # print "vou esperar 5 segundos e tentar de novo"
         time.sleep(5)
