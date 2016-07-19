@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
-import requests
-import json
+import feedparser
+from itertools import chain
 
-page = 0
-maxPages = 20
-url = "http://api.destakes.com/search/?format=json" + "&page=" + str(page)
-response = requests.get(url, timeout=10)
-# print response.status_code
-noticias = []
-while(response.status_code == 200 and page < maxPages):
-    data = json.loads(response.content)
-    for line in data:
-        title = line['title']
-        if title not in noticias:
-               noticias.append(title)
-    page += 1
-    # print "estou no pedido nº",page
-    url = "http://api.destakes.com/search/?format=json" + "&page=" + str(page)
-    response = requests.get(url, timeout=30)
-file = open("headlines.txt",'w')
-file.write("\n".join(noticias).encode("utf-8"))
-file.close()
+feeds = ['http://feeds.feedburner.com/PublicoRSS',
+         'http://feeds.jn.pt/JN-Ultimas',
+         'http://feeds.jn.pt/JN-Justica',
+         'http://feeds.jn.pt/JN-Gente',
+         'http://feeds.jn.pt/JN-Nacional',
+         'http://feeds.jn.pt/JN-Mundo',
+         'http://feeds.jn.pt/JN-Economia',
+         'http://feeds.jn.pt/JN-Pais',
+         'http://feeds.jn.pt/JN-Desporto',
+         'http://feeds.feedburner.com/expresso-geral']
+
+parsed_feeds = map(feedparser.parse, feeds)
+
+items = chain(*map(lambda pf: pf.entries, parsed_feeds))
+
+titles = filter(lambda i: hasattr(i, 'title'), items)
+
+with open('headlines.txt', 'w') as fp:
+    blob = '\n'.join(titles).encode('utf-8')
+    fp.write(blob)
