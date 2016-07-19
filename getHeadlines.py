@@ -17,9 +17,8 @@ parsed_feeds = map(feedparser.parse, feeds)
 
 items = chain(*map(lambda pf: pf.entries, parsed_feeds))
 
-titles = [item.title for item in items if hasattr(item, 'title')]
-for t in titles:
-    print(t)
+titles = filter(lambda i: hasattr(i, 'title'), items)
+
 with open('headlines.txt', 'w') as fp:
     blob = '\n'.join(titles).encode('utf-8')
     fp.write(blob)
