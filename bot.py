@@ -42,29 +42,34 @@ def get_dada_headline(lines, wordlist):
     part2 = line2.split(" %s " % common_word)[-1].strip()
 
     output = "%s %s %s" % (part1, common_word, part2)
+
+    # assegurar que é um resultado novo e não uma cópia do anterior
+    if output == line1 or output == line2:
+        output = get_dada_headline(lines, wordlist)
+
     return output
 
-# --- programa comeca aqui ---
 
-keys = open("keys.txt", 'r')
-CONSUMER_KEY = keys.readline().rstrip("\n")
-CONSUMER_SECRET = keys.readline().rstrip("\n")
-ACCESS_KEY = keys.readline().rstrip("\n")
-ACCESS_SECRET = keys.readline().rstrip("\n")
+if __name__ == "__main__":
+    keys = open("keys.txt", 'r')
+    CONSUMER_KEY = keys.readline().rstrip("\n")
+    CONSUMER_SECRET = keys.readline().rstrip("\n")
+    ACCESS_KEY = keys.readline().rstrip("\n")
+    ACCESS_SECRET = keys.readline().rstrip("\n")
 
-success = False
-while not success:
-    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-    api = tweepy.API(auth)
+    success = False
+    while not success:
+        auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+        auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+        api = tweepy.API(auth)
 
-    WORDLIST_PT = open("wordlist-pt.txt", "r").readlines()
-    HEADLINES_FILE = open("headlines.txt", "r").readlines()
+        WORDLIST_PT = open("wordlist-pt.txt", "r").readlines()
+        HEADLINES_FILE = open("headlines.txt", "r").readlines()
 
-    stringParaEnviar = get_dada_headline(HEADLINES_FILE, WORDLIST_PT)
-    # print "post:", stringParaEnviar
-    if api.update_status(status=bytes(stringParaEnviar)):
-        success = True
-    else:
-        # print "vou esperar 5 segundos e tentar de novo"
-        time.sleep(5)
+        stringParaEnviar = get_dada_headline(HEADLINES_FILE, WORDLIST_PT)
+        # print "post:", stringParaEnviar
+        if api.update_status(status=bytes(stringParaEnviar)):
+            success = True
+        else:
+            # print "vou esperar 5 segundos e tentar de novo"
+            time.sleep(5)
